@@ -1,0 +1,43 @@
+﻿{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block style %}
+    <style type="text/css">
+        #mydef {
+            text-align: center;
+        }
+
+        .finish {
+            font-size: 30px;
+            margin: auto;
+        }
+
+        .score {
+            font-size: 50px;
+            color: red;
+        }
+    </style>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(function () {
+            alert('{{ msg }}');
+            {% if to != None %}
+            window.location.href = '{{ to }}';
+            {% endif %}
+
+            $('#leftbar > li:eq(1)').addClass('active2');
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<div id="mydef">
+    <h1 class="finish">{{ msg }}</h1>
+    <br /><br />
+    {% if to != None %}
+        <a href="{{ to }}" style="font-size: 16px">返回</a>
+    {% endif %}
+</div>
+{% endblock %}

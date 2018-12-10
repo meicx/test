@@ -1,0 +1,83 @@
+﻿{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block script %}
+    <script type="text/javascript">
+        function submitForm() {
+            document.getElementById("form1").submit();
+        }
+
+        $(function () {
+            $('#leftbar > li:eq(1)').addClass('active2');
+        });
+    </script>
+{% endblock %}
+
+{% block style %}
+    <style>
+        .begin {
+            width: 200px;
+            margin: 0 auto;
+            font: 20px/32px "Micorosoft Yahei";
+        }
+
+        #box1 {
+            width: 600px;
+            margin: 20px auto;
+        }
+
+        #box1 p {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        #box1 table {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        #box2 {
+            text-align: center;
+        }
+
+        .tj {
+            font-size: 16px;
+            margin: auto;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="right">
+        <div class="begin"><p>题目查询</p></div>
+        {% if request.user.is_authenticated %}
+            <section>
+                <form action="" method="POST" id="form1" name="hhhhh">
+                    {% csrf_token %}
+                    <div id="box1">
+                            <p>题目类别：</p>
+                            <textarea style="width: 200px;height: 30px;" name="Question_class" title="题目类别"></textarea>
+                            <p>题目难度：</p>
+                        <select class="sel1" name="Question_degree" style="width: 100px;height: 30px;" title="难度">
+                            <option value="">全部</option>
+                            <option value="0">简单</option>
+                            <option value="1">普通</option>
+                            <option value="2">较难</option>
+                        </select>
+                    </div>
+                    <div id="box2">
+                        <button name="tijiao" type="submit" id="tj" class="tj">提交</button>
+                    </div>
+                </form>
+            </section>
+        {% else %}
+            <div>
+                <script type="text/javascript">
+                    alert("请登录！！！");
+                </script>
+                <h1> 亲，想做题，先登录奥！</h1>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+

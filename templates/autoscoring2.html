@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style type="text/css">
+        #box1 {
+            width: 600px;
+            margin: 20px auto;
+        }
+
+        #box1 p {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+    </style>
+{% endblock %}
+
+{% block script %}
+<script src="/static/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#leftbar > li:eq(3)').addClass('active2');
+    });
+
+    function  getExplorer() {
+        var explorer = window.navigator.userAgent;
+        //ie
+        if (explorer.indexOf("MSIE") >= 0) {
+            return 'ie';
+        }
+        //firefox
+        else if (explorer.indexOf("Firefox") >= 0) {
+            return 'Firefox';
+        }
+        //Chrome
+        else if (explorer.indexOf("Chrome") >= 0) {
+            return 'Chrome';
+        }
+        //Opera
+        else if (explorer.indexOf("Opera") >= 0) {
+            return 'Opera';
+        }
+        //Safari
+        else if (explorer.indexOf("Safari") >= 0) {
+            return 'Safari';
+        }
+    }
+
+    function toExcel(tableid) {
+        if (getExplorer() === 'ie')
+        {
+            var curTbl = document.getElementById(tableid);
+            var oXL = new ActiveXObject("Excel.Application");
+            var oWB = oXL.Workbooks.Add();
+            var xlsheet = oWB.Worksheets(1);
+            var sel = document.body.createTextRange();
+            sel.moveToElementText(curTbl);
+            sel.select();
+            sel.execCommand("Copy");
+            xlsheet.Paste();
+            oXL.Visible = true;
+
+            try {
+                var fname = oXL.Application.GetSaveAsFilename("Excel.xls", "Excel Spreadsheets (*.xls), *.xls");
+            } catch (e) {
+                print("Nested catch caught " + e);
+            } finally {
+                oWB.SaveAs(fname);
+                oWB.Close(savechanges = false);
+                oXL.Quit();
+                oXL = null;
+                idTmr = window.setInterval("Cleanup();", 1);
+            }
+
+        } else
+        {
+            tableToExcel(tableid)
+        }
+    }
+
+    function Cleanup() {
+        window.clearInterval(idTmr);
+        CollectGarbage();
+    }
+
+    var tableToExcel = (function () {
+        var uri = 'data:application/vnd.ms-excel;base64,',
+                template = '<html><head><meta charset="UTF-8"></head><body><table>{table}</table></body></html>',
+                base64 = function (s) {
+                    return window.btoa(unescape(encodeURIComponent(s)));
+                };
+        format = function (s, c) {
+            return s.replace(/{(\w+)}/g,
+                    function (m, p) {
+                        return c[p];
+                    });
+        };
+        return function (table, name) {
+            if (!table.nodeType)
+                table = document.getElementById(table);
+            var _h = table.innerHTML;
+            _h = _h.replace(/保存/g, '');
+            var ctx = {worksheet: name || 'Worksheet', table: _h};
+            document.getElementById("dlink").href = uri + base64(format(template, ctx));
+            document.getElementById("dlink").download = '{{ paperinfo.name }}-{{ question_id }}-自动评分2.xls';
+            document.getElementById("dlink").click();
+            // window.location.href = uri + base64(format(template, ctx));
+        };
+    })();
+
+    function preCheck(_id) {
+        if($('#ipt_' + _id).val() === '') {
+            alert('评分不能为空，请重新输入。');
+            return false;
+        }
+        return true;
+    }
+</script>
+{% endblock %}
+
+{% block content %}
+    <div id="out" style="display:none">
+        <b>30% 完成</b>
+        <div id="prog_out" class="progress progress-striped active">
+            <div id="prog_in" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+        </div>
+    </div>
+
+    <div class="right" style="width:80%">
+        <div class="personal_des ">
+            <div class="head" style="border:1px solid #eaeaea;height: auto;">
+                <h2>得分情况</h2>
+            </div>
+
+            <div class="inforcon" style="width:100%">
+                <div id="box1" style="width:90%;overflow:auto;margin-top: 0;" >
+                    <button type="button" style="margin: 10px;padding: 5px 10px;" onclick="toExcel('res_table')">导出为Excel</button>
+                    <a id="dlink"  style="display:none;"></a>
+                    <table id="res_table"  border="1" style="width:100%">
+                        <tr>
+                            <th>学号</th>
+                            <th>姓名</th>
+                            <th width="70%">答案</th>
+                            <th>得分</th>
+                            <th>人工评分</th>
+                        </tr>
+                        {% for i in answerlogs %}
+                            <tr>
+                                <td>{{ i.user.username }}</td>
+                                <td>{{ i.user.nick_name }}</td>
+                                <td>{{ i.answer }}</td>
+                                <td>{{ i.score2 }}</td>
+                                <td>
+                                    <form action="/manualscoring2/{{ paper_id }}/{{ question_id }}/{{ i.id }}/" method="post" onsubmit="return preCheck('{{ i.id }}');">
+                                        {% csrf_token %}
+                                        <span id="sp{{ i.id }}">{% if i.mscore != -1 %}{{ i.mscore }}&nbsp;&nbsp;{% endif %}</span>
+                                        <input id="ipt_{{ i.id }}" name="mscore" type="text" value="" title="请输入一个数字" class="ww50" />
+                                        <button type="submit" class="p5 font12">保存</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

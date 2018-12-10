@@ -1,0 +1,112 @@
+﻿{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style type="text/css">
+        #box1 {
+            width: 600px;
+            margin: 20px auto;
+        }
+
+        #box1 p {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+    </style>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        var msg = '{{ msg }}';
+        $(function () {
+            $('#leftbar > li:eq(5)').addClass('active2');
+
+            if (msg !== '') {
+                alert(msg);
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="right">
+        <div class="personal_des ">
+            <div class="head" style="border:1px solid #eaeaea;">
+                <h1 style="font-size: 18px">语料库管理和模型更新</h1>
+            </div>
+
+            <div id="out" style="display:none">
+                <b>5% 完成</b>
+                <div id="prog_out" class="progress progress-striped active">
+                    <div id="prog_in" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0"
+                         aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 10px;">
+                {% csrf_token %}
+                类别：<input id="category" type="text" name="category" placeholder="请输入类别" style="height: 30px; width: 200px;" />
+                <br><br>
+                文件：<input id="word" type="file" name="word" accept=".docx" style="display: inline-block; width: 200px;" />
+                <br><br>
+                <input id="btn_upload" class="btn btn-info" type="button" value="模型更新" style="padding: 5px 10px;" onclick="upload_file()" />
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_js %}
+    <script type="text/javascript" src="/static/js/ajaxfileupload.js"></script>
+    <script type="text/javascript">
+        // 50秒上传成功
+        let timer = null;
+        let interval = 1000;
+        let step = 2;
+        function upload_file() {
+            if (timer != null) {
+                clearInterval(timer);
+            }
+
+            let cur = 0;
+            if ($('#category').val() === '') {
+                alert('请输入类别.');
+                return;
+            }
+
+            if ($('#word').val() === '') {
+                alert('请选择一个文件再上传.');
+                return;
+            }
+
+            $('#btn_upload').attr('disabled', 'disabled');
+            timer = setInterval(function () {
+                cur += step;
+                $('#out').show();
+                document.getElementsByTagName('b')[0].innerHTML = cur + "% 完成";
+                $('#prog_in').width(cur + '%');
+                if (cur >= 100) {
+                    clearInterval(timer);
+                    $('#btn_upload').removeAttr('disabled');
+                    alert('模型更新完成.');
+                }
+            }, interval);
+
+            // 上传word
+            data = {
+                category: $('#category').val(),
+                csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+            };
+            $.ajaxFileUpload({
+                url: '/modelupdate/',
+                type: 'POST',
+                fileElementId: 'word',
+                dataType: 'json',
+                data: data,
+                success: function (data, status) {},
+                error: function (data, status, e) {}
+            });
+        }
+    </script>
+{% endblock %}

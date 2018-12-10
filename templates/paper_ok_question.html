@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block style %}
+    <style type="text/css">
+        .begin {
+            width: 200px;
+            margin: 0 auto;
+            font: 20px/32px "Micorosoft Yahei";
+        }
+
+        #box1 {
+            width: 600px;
+            margin: 20px auto;
+        }
+
+        #box1 p {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        #box1 table {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        #box2 {
+            text-align: center;
+        }
+
+        .tj {
+            font-size: 16px;
+            margin: auto;
+        }
+    </style>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        function submitForm() {
+            document.getElementById("form1").submit();
+        }
+
+        $(function () {
+            $('#leftbar > li:eq(2)').addClass('active2');
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<div class="begin" style="width: 400px; text-align: center"><p>{{ paper_list_name }}</p></div>
+<div>
+    {% if request.user.is_authenticated %}
+        <section>
+            <form action="" method="POST" id="form1" name="hhhhh">
+                {% csrf_token %}
+                {% for question_now in question %}
+                    <div id="box1" style="width:800px">
+                            <p>{{ forloop.counter }}. {{ question_now.content }}</p>
+                            <p>标准答案：{{ question_now.answer }}<p>
+                            <p>用户答案：{{ question_now.useranswer }}<p>
+                            <p>得分点：{{ question_now.score_point }}<p>
+                            <p>试题分数：{{ question_now.score }}<p>
+                            <p>试题难度：{% if question_now.Question_degree == 0 %}简单{% elif question_now.Question_degree == 1 %}普通{% else %}较难{% endif %}<p>
+                            <p>自动评分1：{% if question_now.userscore == -1 %}未评分{% else %}{{ question_now.userscore }}{% endif %}</p>
+                            <p>自动评分2：{% if question_now.userscore2 == -1 %}未评分{% else %}{{ question_now.userscore2 }}{% endif %}</p>
+                            <p>手动评分：{% if question_now.usermscore == -1 %}未评分{% else %}{{ question_now.usermscore }}{% endif %}</p>
+                    </div>
+                    <hr/>
+                {% endfor %}
+            </form>
+        </section>
+    {% else %}
+        <div>
+            <script type="text/javascript">
+                alert("请登录！！！");
+            </script>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

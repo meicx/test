@@ -1,0 +1,43 @@
+﻿{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(function () {
+            $('#leftbar > li:eq(1)').addClass('active2');
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="right">
+        <div class="personal_des ">
+            <div class="head" style="border:1px solid #eaeaea;">
+                <h1>试题管理</h1>
+            </div>
+            <div class="inforcon">
+                <div id="box1" style="width: 100%">
+                    <div style="margin:20px"><a href="{% url 'question_add' %}">新增试题</a></div>
+                    <div id="box1" style="width: 100%">
+                        <div style="margin:20px"><a href="{% url 'question_check' %}">题目查询</a></div>
+                        <table border="1" style="width:100%">
+                            <tr>
+                                <th>id</th>
+                                <th>题目</th>
+                                <th>操作</th>
+                            </tr>
+                            {% for i in question_list %}
+                            <tr>
+                                <td class="tc">{{ i.0 }}</td>
+                                <td>{{ i.1 }}</td>
+                                <td class="tc"><a href="{% url 'question_edit' i.0 %}">编辑</a> | <a href="{% url 'question_delete' i.0 %}">删除</a></td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

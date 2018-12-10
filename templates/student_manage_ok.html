@@ -1,0 +1,37 @@
+﻿{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block style %}
+    <style type="text/css">
+        #box1 {
+            width: 600px;
+            margin: 20px auto;
+        }
+
+        #box1 p {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+    </style>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(function () {
+            $('#leftbar > li:eq(4)').addClass('active2');
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="right">
+        <div class="personal_des ">
+            <div class="head" style="border:1px solid #eaeaea;">
+                <h1>学生信息管理</h1>
+            </div>
+            <div style="margin-top: 10px;">
+                插入成功，共插入{{ insert_total }}条数据。{{ repeat_msg }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

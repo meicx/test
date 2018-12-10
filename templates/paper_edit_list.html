@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block style %}
+    <style type="text/css">
+        #box1 {
+            width: 600px;
+            margin: 20px auto;
+        }
+
+        #box1 p {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+    </style>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(function () {
+            $('#leftbar > li:eq(2)').addClass('active2');
+        });
+
+        function preCheck() {
+            var cbs = $('#qform').find('input[type=checkbox]:checked');
+            if (cbs.length === 0) {
+                alert('未选中任何试题，请重新选择！');
+                return false;
+            }
+            return true;
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="right">
+        <div class="personal_des ">
+            <div class="head" style="border:1px solid #eaeaea;">
+                <h1>编辑考试-从题库添加试题</h1>
+            </div>
+            <div class="inforcon" style="width: 100%">
+                <form id="qform" method="POST" onsubmit="return preCheck();">
+                    {% csrf_token %}
+                    <div id="box1" style="width:90%">
+                        <div style="margin:20px">
+                            <p><input type="submit" value="添加至试卷" style="padding: 5px; cursor: pointer; border-radius: 5px;" /></p>
+                            请选择题目:
+                        </div>
+                        <table border="1" style="width:100%">
+                            <tr>
+                                <th>选择</th>
+                                <th>id</th>
+                                <th>题目</th>
+                            </tr>
+                        {% for i in question_list %}
+                            <tr>
+                                <td class="tc"><input type="checkbox" name="question_id" value="{{ i.0 }}"></td>
+                                <td class="tc">{{ i.0 }}</td>
+                                <td>{{ i.1 }}</td>
+                            </tr>
+                        {% endfor %}
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block script %}
+    <script type="text/javascript">
+        function submitForm() {
+            document.getElementById("form1").submit();
+        }
+    </script>
+{% endblock %}
+
+{% block style %}
+    <style type="text/css">
+        .begin {
+            width: 200px;
+            margin: 0 auto;
+            font: 20px/32px "Micorosoft Yahei";
+        }
+
+        #box1 {
+            width: 600px;
+            margin: 20px auto;
+        }
+
+        #box1 p {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        #box1 table {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        #box2 {
+            text-align: center;
+        }
+
+        .tj {
+            font-size: 16px;
+            margin: auto;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="begin"><p>{{ paper_list_name }}</p></div>
+<div>
+    {% if request.user.is_authenticated %}
+        <section>
+            <form action="" method="POST" id="form1" name="hhhhh">
+                {% csrf_token %}
+                {% for question_now in question %}
+                    <div id="box1">
+                        <p>{{ forloop.counter }}. {{ question_now.content }}</p>
+                        <textarea style="width: 500px;height: 100px;" name="{{ question_now.id }}" title=""></textarea>
+                    </div>
+                    <hr/>
+                {% endfor %}
+                <div id="box2">
+                    <input name="tijiao" type="submit" value="提交" onclick="submitForm()" id="tj" class="tj"/>
+                </div>
+            </form>
+        </section>
+    {% else %}
+        <div>
+            <script type="text/javascript">
+                alert("请登录！！！");
+            </script>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

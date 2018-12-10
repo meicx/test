@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title%}在线考试系统{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(function () {
+            $('.nav.ul-menubar > li:eq(0)').addClass('active');
+        });
+    </script>
+{% endblock %}
+
+{% block contentwrapper %}
+    <div class="right">
+        <div class="personal_des ">
+            <div class="head" style="border:1px solid #eaeaea;">
+                <h1>个人信息</h1>
+            </div>
+            <div class="inforcon">
+                   <div class="left" style="width:242px;">
+
+           </div>
+
+                <form class="perinform" id="jsEditUserForm" autocomplete="off" method="post">
+                    {% csrf_token %}
+                    <ul class="right">
+                        {% if sysuser.role == 1 %}
+                        <li>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：
+                            <input type="text" name="username" id="username" value="{{ sysuser.username }}" maxlength="10" title="" disabled />
+                            <i class="error-tips"></i>
+                        </li>
+                        <li>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：
+                            <input type="text" name="nick_name" id="nick_name" value="{{ sysuser.nick_name }}" maxlength="10" title="" />
+                            <i class="error-tips"></i>
+                        </li>
+                        <li>班&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级：
+                            <input type="text" name="user_class" id="user_class" value="{{ sysuser.user_class }}" maxlength="10" title="" />
+                            <i class="error-tips"></i>
+                        </li>
+                        {% else %}
+                        <li>工&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：
+                            <input type="text" name="username" id="username" value="{{ sysuser.username }}" maxlength="10" title="" />
+                            <i class="error-tips"></i>
+                        </li>
+                        <li>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：
+                            <input type="text" name="nick_name" id="nick_name" value="{{ sysuser.nick_name }}" maxlength="10" title="" />
+                            <i class="error-tips"></i>
+                        </li>
+                        {% endif %}
+                        <li class="button heibtn">
+                            <input type="submit" id="jsEditUserBtn" value="保存" />
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a class="btn-green btn-w100" id="jsUserResetPwd" style="padding: 8px 20px 7px 20px;border-radius: 2px;">修改密码</a>
+                        </li>
+
+                    </ul>
+                    <div style="border-top:0px solid #eaeaea;margin-top:-10px;">
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

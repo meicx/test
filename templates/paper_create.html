@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block style %}
+    <style type="text/css">
+        #box1 {
+            width: 600px;
+            margin: 20px auto;
+        }
+
+        #box1 p {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+    </style>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(function () {
+            $('#leftbar > li:eq(2)').addClass('active2');
+        });
+
+        function preCheck() {
+            if ($('#papername').val() === '') {
+                alert('请输入考试名称。');
+                return false;
+            }
+
+            if ($('#paperclass').val() === '') {
+                alert('请至少输入一个考试班级。');
+                return false;
+            }
+
+            if ($('#qtbl').find('input:checked').length === 0) {
+                alert('请至少选择一个考试题目。');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="right">
+        <div class="personal_des ">
+            <div class="head" style="border:1px solid #eaeaea;">
+                <h1>创建考试</h1>
+            </div>
+            <div class="inforcon">
+                <form method="POST" onsubmit="return preCheck();">
+                    {% csrf_token %}
+                    <div id="box1" style="width:90%">
+                        <div style="margin-bottom:30px">
+                            <p>考试名称： <input type="text" id="papername" name="papername" title="" /><input style="margin-left: 20px;padding: 5px;cursor: pointer;" type="submit" value="创建" /></p><br/>
+                            <p>考试班级： <input type="text" id="paperclass"  name="paperclass" title="" />&nbsp;&nbsp;<span>（多个班级请用逗号隔开）</span></p><br/>
+                            请选择题目:
+                        </div>
+                        <table id="qtbl" border="1" style="width:100%">
+                            <tr>
+                                <th>选择</th>
+                                <th>id</th>
+                                <th>题目</th>
+                                <th>答案</th>
+                            </tr>
+                            {% for i in question_list %}
+                            <tr>
+                                <td><input type="checkbox" name="question_id" value="{{ i.0 }}" title=""></td>
+                                <td>{{ i.0 }}</td>
+                                <td>{{ i.1 }}</td>
+                                <td>{{ i.2 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

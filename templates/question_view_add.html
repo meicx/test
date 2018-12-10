@@ -1,0 +1,129 @@
+﻿{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block script %}
+    <script type="text/javascript">
+        function submitForm() {
+            document.getElementById("form1").submit();
+        }
+
+        function preCheck() {
+            var lines = $('#dfd').find('.oneline');
+            var p = '';
+            for (var i = 0; i < lines.length; i++) {
+                var line = $(lines[i]);
+                var c = line.find('.txt1').first().val();
+                var d = line.find('.txt2').first().val();
+                if (c !== '' && d !== '') {
+                    p += c + ' ' + d + '分；';
+                }
+            }
+
+            if (p !== '') {
+                $('#score_point').val(p.substring(0, p.length - 1));
+            } else {
+                alert('请至少输入一个得分点。');
+                return false;
+            }
+            return true;
+        }
+
+        function addone() {
+            var oneline = $('<div class="oneline">关键词：<input type="text" class="txt1" title="" /> 分值：<input type="text" class="txt2" title="" /></div>');
+            $('#dfd').append(oneline);
+        }
+
+        function removeone() {
+            var lines = $('#dfd').find('.oneline');
+            if (lines.length > 1) {
+                $('#dfd').find('.oneline:last').remove();
+            } else {
+                alert('至少保留一个得分点。');
+            }
+        }
+
+        $(function () {
+            $('#leftbar > li:eq(1)').addClass('active2');
+        });
+    </script>
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/basestyle.css' %}">
+    <style type="text/css">
+        .begin {
+            width: 200px;
+            margin: 0 auto;
+            font: 20px/32px "Micorosoft Yahei";
+        }
+
+        #box1 {
+            width: 600px;
+            margin: 20px auto;
+        }
+
+        #box1 p {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        #box1 table {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        #box2 {
+            text-align: center;
+        }
+
+        .tj {
+            font-size: 16px;
+            margin: auto;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="right">
+        <div class="begin"><p>新增试题</p></div>
+        <form method="POST" id="form1" name="hhhhh" onsubmit="return preCheck()">
+            {% csrf_token %}
+            <div id="box1">
+                <p>题目类别：</p>
+                <textarea style="width: 500px;height: 40px;" name="Question_class" title="题目类别"></textarea>
+                <p>题干：</p>
+                <textarea style="width: 500px;height: 100px;" name="content" title="新题目"></textarea>
+                <p>参考答案：</p>
+                <textarea style="width: 500px;height: 100px;" name="answer" title="标准答案"></textarea>
+                <p>
+                    得分点：
+                    <span>
+                        <a href="javascript:;" onclick="addone()" class="font12">增加一行</a>
+                        &nbsp;&nbsp;
+                        <a href="javascript:;" onclick="removeone()" class="font12">减少一行</a>
+                    </span>
+                </p>
+                <div id="dfd">
+                    <div class="oneline">
+                        关键词：<input type="text" class="txt1" title="" />
+                        分值：<input type="text" class="txt2" title="" />
+                    </div>
+                </div>
+                <textarea id="score_point" style="width: 500px;height: 100px;" name="score_point" title="得分点" class="dn"></textarea>
+                <br />
+                <p>分数：</p>
+                <input type="number" name="score" style="width: 100px;height: 30px;" title="分数" />
+                <p>难度：</p>
+                <select class="sel1" name="Question_degree" style="width: 100px;height: 30px;" title="难度">
+                    <option value="0">简单</option>
+                    <option value="1">普通</option>
+                    <option value="2">较难</option>
+                </select>
+            </div>
+            <hr />
+            <div id="box2">
+                <button name="tijiao" type="submit" id="tj" class="tj" style="padding: 5px;">提交</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

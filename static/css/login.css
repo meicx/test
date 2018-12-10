@@ -1,0 +1,12 @@
+
+.captcha {
+   float:right;
+   height: 34px;
+}
+.valid_field input{
+    height: 34px;
+    width: 230px;
+}
+.valid_field.focus input{
+    border: 1px solid #ddd;
+}

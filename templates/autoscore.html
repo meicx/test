@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <style type="text/css">
+        #box1 {
+            width: 600px;
+            margin: 20px auto;
+        }
+
+        #box1 p {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+    </style>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(function () {
+            $('#leftbar > li:eq(3)').addClass('active2');
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div id="out" style="display:none">
+        <b>30% 完成</b>
+        <div id="prog_out" class="progress progress-striped active">
+            <div id="prog_in" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0"
+                 aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+            </div>
+        </div>
+    </div>
+
+    <div class="right">
+        <div class="personal_des">
+            <div class="head" style="border:1px solid #eaeaea;">
+                <h2 style="margin: 8px 0 0 0;">自动评分1</h2>
+            </div>
+            <div class="inforcon">
+                <div id="box1" style="width:90%">
+                    <table border="1" style="width:100%">
+                        <tr>
+                            <th>id</th>
+                            <th>题目</th>
+                            <th>答案</th>
+                            <th>分值</th>
+                            <th>自动评分1</th>
+                        </tr>
+                        {% for i in question %}
+                            <tr>
+                                <td>{{ i.question.id }}</td>
+                                <td>{{ i.question.content }}</td>
+                                <td>{{ i.question.answer }}</td>
+                                <td>{{ i.question.score }}</td>
+                                <td><a onclick='prograssquery({{ i.question.id }})' style="cursor: pointer;">自动评分1</a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_js %}
+<script type="text/javascript">
+    function prograssquery(questionid) {
+        var res = 0;
+        var sitv = setInterval(function () {
+            res += 1;
+            $('#out').show();
+            document.getElementsByTagName('b')[0].innerHTML = res + "% 完成";
+            $('#prog_in').width(res + '%');     // 改变进度条进度，注意这里是内层的div， res是后台返回的进度
+            if (res == 99) {
+                document.getElementsByTagName('b')[0].innerHTML = "99% 完成 数据量过大，请耐心等待";
+                clearInterval(sitv);
+            }
+
+        }, 1000);                                 // 每1秒查询一次后台进度
+        var paper = {{ paperid }};
+        $.ajax({
+            url: "/scoring/" + paper + "/" + questionid + "/",
+            success: function (data) {
+                 clearInterval(sitv);
+                 $('#prog_in').width(100+'%');
+                 document.getElementsByTagName('b')[0].innerHTML = "100% 完成 加载数据中";
+                alert("已完成"+data+"个题目计算");
+                location.href="/showscoring/"+paper+"/"+questionid+"/";
+            }
+        });
+    }
+</script>
+{% endblock %}
