@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+﻿{% extends "newBase.html" %}
 {% load staticfiles %}
 
 {% block script %}
@@ -8,7 +8,7 @@
         }
 
         $(function () {
-            $('#leftbar > li:eq(1)').addClass('active2');
+            $('.nav > li:eq(1)').addClass('nav-active');
         });
     </script>
 {% endblock %}
@@ -48,28 +48,38 @@
 {% endblock %}
 
 {% block content %}
-    <div class="right">
-        <div class="begin"><p>题目查询</p></div>
+    <div class="wrapper">
+        <div class="page-title-box">
+            <h4 class="page-title">题目查询</h4>
+        </div>
         {% if request.user.is_authenticated %}
-            <section>
-                <form action="" method="POST" id="form1" name="hhhhh">
+        <div class="page-content">
+                <form class="form-horizontal form-customer" method="POST" id="form1" name="hhhhh">
                     {% csrf_token %}
-                    <div id="box1">
-                            <p>题目类别：</p>
-                            <textarea style="width: 200px;height: 30px;" name="Question_class" title="题目类别"></textarea>
-                            <p>题目难度：</p>
-                        <select class="sel1" name="Question_degree" style="width: 100px;height: 30px;" title="难度">
-                            <option value="">全部</option>
-                            <option value="0">简单</option>
-                            <option value="1">普通</option>
-                            <option value="2">较难</option>
-                        </select>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">题目类别：</label>
+                        <div class="col-md-7">
+                            <textarea class="form-control" name="Question_class" type="题目类别"></textarea>
+                        </div>
                     </div>
-                    <div id="box2">
-                        <button name="tijiao" type="submit" id="tj" class="tj">提交</button>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">题目难度：</label>
+                        <div class="col-md-7">
+                            <select class="sel1" name="Question_degree" style="width: 100px;height: 30px;" title="难度">
+                                <option value="">全部</option>
+                                <option value="0">简单</option>
+                                <option value="1">普通</option>
+                                <option value="2">较难</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <button type="submit" name="tijiao" id="tj" class="btn btn-primary">提交</button>
+                        </div>
                     </div>
                 </form>
-            </section>
         {% else %}
             <div>
                 <script type="text/javascript">

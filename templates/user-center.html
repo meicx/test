@@ -1,58 +1,68 @@
-﻿{% extends "base.html" %}
+﻿{% extends "newBase.html" %}
 {% load static %}
 
 {% block script %}
     <script type="text/javascript">
         $(function () {
-            $('#leftbar > li:eq(0)').addClass('active2');
+            $('.nav > li:eq(0)').addClass('nav-active');
         });
     </script>
 {% endblock %}
 
 {% block content %}
-    <div class="right">
-        <div class="personal_des ">
-            <div class="head" style="border:1px solid #eaeaea;">
-                <h1>个人信息</h1>
-            </div>
-            <div class="inforcon">
-                <div class="left" style="width:242px;"></div>
-                <form class="perinform" id="jsEditUserForm" autocomplete="off" method="post">
-                    {% csrf_token %}
-                    <ul class="right">
-                        {% if sysuser.role == 1 %}
-                        <li>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：
-                            <input type="text" name="username" id="username" value="{{ sysuser.username }}" maxlength="10" title="" disabled />
-                            <i class="error-tips"></i>
-                        </li>
-                        <li>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：
-                            <input type="text" name="nick_name" id="nick_name" value="{{ sysuser.nick_name }}" maxlength="10" title="" />
-                            <i class="error-tips"></i>
-                        </li>
-                        <li>班&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级：
-                            <input type="text" name="user_class" id="user_class" value="{{ sysuser.user_class }}" maxlength="10" title="" />
-                            <i class="error-tips"></i>
-                        </li>
-                        {% else %}
-                        <li>工&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：
-                            <input type="text" name="username" id="username" value="{{ sysuser.username }}" maxlength="10" title="" />
-                            <i class="error-tips"></i>
-                        </li>
-                        <li>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：
-                            <input type="text" name="nick_name" id="nick_name" value="{{ sysuser.nick_name }}" maxlength="10" title="" />
-                            <i class="error-tips"></i>
-                        </li>
-                        {% endif %}
-                        <li class="button heibtn">
-                            <input type="submit" id="jsEditUserBtn" value="保存" />
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <a class="btn-green btn-w100" id="jsUserResetPwd" style="padding: 8px 20px 7px 20px;border-radius: 2px;">修改密码</a>
-                        </li>
-
-                    </ul>
-                    <div style="border-top:0px solid #eaeaea;margin-top:-10px;"></div>
-                </form>
-            </div>
+    <div class="wrapper">
+        <div class="page-title-box">
+            <h4 class="page-title">个人信息</h4>
+        </div>
+        <div class="page-content">
+            <form class="form-horizontal form-customer" id="jsEditUserForm" autocomplete="off" method="post">
+                {% csrf_token %}
+                {% if sysuser.role == 1 %}
+                <div class="form-group">
+                    <label class="col-md-2 control-label">学号：</label>
+                    <div class="col-md-7">
+                        <input type="text" class="form-control" name="username" id="username" value="{{ sysuser.username }}" maxlength="10" title="" disabled />
+                        <i class="error-tips"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">姓名：</label>
+                    <div class="col-md-7">
+                        <input type="text" class="form-control" name="nick_name" id="nick_name" value="{{ sysuser.nick_name }}" maxlength="10" title="" />
+                        <i class="error-tips"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">班级：</label>
+                    <div class="col-md-7">
+                        <input type="text" class="form-control" name="user_class" id="user_class" value="{{ sysuser.user_class }}" maxlength="10" title="" />
+                        <i class="error-tips"></i>
+                    </div>
+                </div>
+                {% else %}
+                <div class="form-group">
+                    <label class="col-md-2 control-label">工号：</label>
+                    <div class="col-md-7">
+                        <input type="text" class="form-control" name="username" id="username" value="{{ sysuser.username }}" maxlength="10" title="" disabled />
+                        <i class="error-tips"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">姓名：</label>
+                    <div class="col-md-7">
+                        <input type="text" class="form-control" name="nick_name" id="nick_name" value="{{ sysuser.nick_name }}" maxlength="10" title="" />
+                        <i class="error-tips"></i>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="form-group m-t-20">
+                    <label class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <button type="submit" id="jsEditUserBtn" class="btn btn-primary m-r-15">保存</button>
+                        <a id="jsUserResetPwd" class="btn btn-purple">修改密码</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -80,17 +90,17 @@
             </div>
         </div>
         <div class="resetpwdbox dialogbox" id="jsResetDialog">
-            <h1>修改密码</h1>
+            <h1 style="font-size: 18px;margin: 0;height: 40px;line-height: 40px;">修改密码</h1>
             <div class="close jsCloseDialog"><img src="{% static 'images/dig_close.png' %}"/></div>
             <div class="cont">
                 <form id="jsResetPwdForm" autocomplete="off">
                     <div class="box">
                         <span class="word2" >新&nbsp;&nbsp;密&nbsp;&nbsp;码</span>
-                        <input type="password" id="pwd" name="password1" placeholder="6-20位非中文字符"/>
+                        <input type="password" id="pwd" name="password1" placeholder="6-20位非中文字符" style="background: transparent"/>
                     </div>
                     <div class="box">
                         <span class="word2" >确定密码</span>
-                        <input type="password" id="repwd" name="password2" placeholder="6-20位非中文字符"/>
+                        <input type="password" id="repwd" name="password2" placeholder="6-20位非中文字符" style="background: transparent"/>
                     </div>
                     <div class="error btns" id="jsResetPwdTips"></div>
                     <div class="button">

@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+﻿{% extends "newBase.html" %}
 {% load staticfiles %}
 
 {% block style %}
@@ -19,7 +19,7 @@
     <script type="text/javascript">
         var msg = '{{ msg }}';
         $(function () {
-            $('#leftbar > li:eq(4)').addClass('active2');
+            $('.nav > li:eq(4)').addClass('nav-active');
 
             if (msg !== '') {
                 alert(msg);
@@ -29,18 +29,26 @@
 {% endblock %}
 
 {% block content %}
-    <div class="right">
-        <div class="personal_des ">
-            <div class="head" style="border:1px solid #eaeaea;">
-                <h1>学生信息管理</h1>
-            </div>
-            <div style="margin-top: 10px;">
-                <form class="" action="" method="post" enctype="multipart/form-data" >
-                    {% csrf_token %}
-                    <input type="file" name="excel" accept=".xls,.xlsx" />
-                    <input type="submit" value="上传" style="padding: 5px 10px;" />
-                </form>
-            </div>
+    <div class="wrapper">
+        <div class="page-title-box">
+            <h4 class="page-title">学生信息管理</h4>
+        </div>
+        <div class="page-content">
+            <form class="form-horizontal form-customer form-small" action="" method="post" enctype="multipart/form-data" >
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="col-md-3">文件：</label>
+                    <div class="col-md-7">
+                        <input type="file" name="excel" accept=".xls,.xlsx" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-7">
+                        <button class="btn btn-primary" type="submit">上传</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}

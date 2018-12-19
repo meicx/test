@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "newBase.html" %}
 {% load staticfiles %}
 
 {% block script %}
@@ -10,64 +10,37 @@
 {% endblock %}
 
 {% block style %}
-    <style type="text/css">
-        .begin {
-            width: 200px;
-            margin: 0 auto;
-            font: 20px/32px "Micorosoft Yahei";
-        }
-
-        #box1 {
-            width: 600px;
-            margin: 20px auto;
-        }
-
-        #box1 p {
-            font-size: 18px;
-            margin-bottom: 4px;
-        }
-
-        #box1 table {
-            font-size: 16px;
-            margin-bottom: 2px;
-        }
-
-        #box2 {
-            text-align: center;
-        }
-
-        .tj {
-            font-size: 16px;
-            margin: auto;
-        }
-    </style>
 {% endblock %}
 
 {% block content %}
-<div class="begin"><p>{{ paper_list_name }}</p></div>
-<div>
-    {% if request.user.is_authenticated %}
-        <section>
-            <form action="" method="POST" id="form1" name="hhhhh">
-                {% csrf_token %}
-                {% for question_now in question %}
-                    <div id="box1">
-                        <p>{{ forloop.counter }}. {{ question_now.content }}</p>
-                        <textarea style="width: 500px;height: 100px;" name="{{ question_now.id }}" title=""></textarea>
-                    </div>
-                    <hr/>
-                {% endfor %}
-                <div id="box2">
-                    <input name="tijiao" type="submit" value="提交" onclick="submitForm()" id="tj" class="tj"/>
-                </div>
-            </form>
-        </section>
-    {% else %}
+<div class="wrapper">
+    <div class="page-title-box">
+        <h4 class="page-title">{{ paper_list_name }}</h4>
+    </div>
+    <div class="page-content">
+        {% if request.user.is_authenticated %}
+        <form action="" method="POST" id="form1" name="hhhhh" class="form-horizontal form-customer">
+            {% csrf_token %}
+            {% for question_now in question %}
+            <div class="form-group" style="margin: 0">
+                <p>{{ forloop.counter }}. {{ question_now.content }}</p>
+            </div>
+            <div class="form-group" style="margin: 0">
+                <textarea style="width: 500px;height: 100px;" name="{{ question_now.id }}" title=""></textarea>
+            </div>
+            {% endfor %}
+            <div class="form-group" style="margin: 0">
+                <br/>
+                <button type="submit" name="tijiao" id="tj" class="btn btn-primary" onclick="submitForm()">提交</button>
+            </div>
+        </form>
+        {% else %}
         <div>
             <script type="text/javascript">
                 alert("请登录！！！");
             </script>
         </div>
-    {% endif %}
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

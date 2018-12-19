@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "newBase.html" %}
 {% load staticfiles %}
 
 {% block style %}
@@ -18,13 +18,31 @@
 {% block script %}
     <script type="text/javascript">
         $(function () {
-            $('#leftbar > li:eq(2)').addClass('active2');
+            $('.nav > li:eq(2)').addClass('nav-active');
         });
     </script>
 {% endblock %}
 
 {% block content %}
-    <div class="right">
+    <div class="wrapper">
+        <div class="page-title-box">
+            <h4 class="page-title">查看成绩</h4>
+        </div>
+        <div class="page-content">
+            {% for i in papers %}
+                <div class="panel panel-purple" style="margin-top: 10px;margin-left: 2%;width: 30%; display: inline-block;">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" style="color: #fff;">试卷名称</h3>
+                    </div>
+                    <div class="panel-body">
+                        <a href="{% url 'paper' i.id %}">{{ i.name }}</a>
+                        <span style="margin-left:20px">{{ i.status_name}}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- <div class="right">
         <div class="personal_des ">
             <div class="head" style="border:1px solid #eaeaea;">
                 <h1>查看成绩</h1>
@@ -37,5 +55,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 {% endblock %}

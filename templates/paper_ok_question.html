@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "newBase.html" %}
 {% load staticfiles %}
 
 {% block style %}
@@ -42,34 +42,44 @@
         }
 
         $(function () {
-            $('#leftbar > li:eq(2)').addClass('active2');
+            $('.nav > li:eq(2)').addClass('nav-active');
         });
     </script>
 {% endblock %}
 
 {% block content %}
-<div class="begin" style="width: 400px; text-align: center"><p>{{ paper_list_name }}</p></div>
-<div>
+<div class="wrapper">
+    <div class="page-title-box">
+        <h4 class="page-title">{{ paper_list_name }}</h4>
+    </div>
+    <div class="page-content">
     {% if request.user.is_authenticated %}
-        <section>
-            <form action="" method="POST" id="form1" name="hhhhh">
-                {% csrf_token %}
-                {% for question_now in question %}
-                    <div id="box1" style="width:800px">
-                            <p>{{ forloop.counter }}. {{ question_now.content }}</p>
-                            <p>标准答案：{{ question_now.answer }}<p>
-                            <p>用户答案：{{ question_now.useranswer }}<p>
-                            <p>得分点：{{ question_now.score_point }}<p>
-                            <p>试题分数：{{ question_now.score }}<p>
-                            <p>试题难度：{% if question_now.Question_degree == 0 %}简单{% elif question_now.Question_degree == 1 %}普通{% else %}较难{% endif %}<p>
-                            <p>自动评分1：{% if question_now.userscore == -1 %}未评分{% else %}{{ question_now.userscore }}{% endif %}</p>
-                            <p>自动评分2：{% if question_now.userscore2 == -1 %}未评分{% else %}{{ question_now.userscore2 }}{% endif %}</p>
-                            <p>手动评分：{% if question_now.usermscore == -1 %}未评分{% else %}{{ question_now.usermscore }}{% endif %}</p>
-                    </div>
-                    <hr/>
-                {% endfor %}
-            </form>
-        </section>
+        <form class="form-horizontal form-customer form-medium" action="" method="POST" id="form1" name="hhhhh">
+            {% csrf_token %}
+            {% for question_now in question %}
+                        <p class="question-title">{{ forloop.counter }}. {{ question_now.content }}</p>
+                        <p class="question-answer">标准答案：{{ question_now.answer }}<p>
+                        <p class="question-answer">用户答案：{{ question_now.useranswer }}<p>
+                        <p class="question-answer">得分点：{{ question_now.score_point }}<p>
+                        <div class="btn-group m-t-10 m-b-10">
+                            <button type="button" class="btn btn-white">试题分数：<span class="question-score">{{ question_now.score }}</span></button>
+                            <button type="button" class="btn btn-primary">试题难度：<span class="question-score">{% if question_now.Question_degree == 0 %}简单{% elif question_now.Question_degree == 1 %}普通{% else %}较难{% endif %}</span></button>
+                            <button type="button" class="btn btn-white">自动评分1：<span class="question-score">{% if question_now.userscore == -1 %}未评分{% else %}{{ question_now.userscore }}{% endif %}</span></button>
+                            <button type="button" class="btn btn-purple">自动评分2：<span class="question-score">{% if question_now.userscore2 == -1 %}未评分{% else %}{{ question_now.userscore2 }}{% endif %}</span></button>
+                            <button type="button" class="btn btn-white">手动评分：<span class="question-score">{% if question_now.usermscore == -1 %}未评分{% else %}{{ question_now.usermscore }}{% endif %}</span></button>
+                        </div>
+                            <!-- <div class="question-detail">
+                            <p>
+                                试题分数：<span class="question-score">{{ question_now.score }}</span>
+                                试题难度：<span class="question-score">{% if question_now.Question_degree == 0 %}简单{% elif question_now.Question_degree == 1 %}普通{% else %}较难{% endif %}</span>
+                            <p>
+                            <p>自动评分1：<span class="question-score">{% if question_now.userscore == -1 %}未评分{% else %}{{ question_now.userscore }}{% endif %}</span></p>
+                            <p>自动评分2：<span class="question-score">{% if question_now.userscore2 == -1 %}未评分{% else %}{{ question_now.userscore2 }}{% endif %}</span></p>
+                            <p>手动评分：<span class="question-score">{% if question_now.usermscore == -1 %}未评分{% else %}{{ question_now.usermscore }}{% endif %}</span></p>
+                        </div> -->
+                <hr/>
+            {% endfor %}
+        </form>
     {% else %}
         <div>
             <script type="text/javascript">

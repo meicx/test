@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+﻿{% extends "newBase.html" %}
 {% load staticfiles %}
 
 {% block script %}
@@ -29,7 +29,7 @@
         }
 
         function addone() {
-            var oneline = $('<div class="oneline">关键词：<input type="text" class="txt1" title="" /> 分值：<input type="text" class="txt2" title="" /></div>');
+            var oneline = $('<div class="oneline">关键词：<input type="text" class="txt1 input-repeat" title="" /> 分值：<input type="text" class="txt2 input-repeat" title="" /></div>');
             $('#dfd').append(oneline);
         }
 
@@ -84,46 +84,68 @@
 {% endblock %}
 
 {% block content %}
-    <div class="right">
-        <div class="begin"><p>新增试题</p></div>
-        <form method="POST" id="form1" name="hhhhh" onsubmit="return preCheck()">
+<div class="wrapper">
+    <div class="page-title-box">
+        <h4 class="page-title">新增试题</h4>
+    </div>
+    <div class="page-content">
+        <form class="form-horizontal form-customer" method="POST" id="form1" name="hhhhh" onsubmit="return preCheck()">
             {% csrf_token %}
-            <div id="box1">
-                <p>题目类别：</p>
-                <textarea style="width: 500px;height: 40px;" name="Question_class" title="题目类别"></textarea>
-                <p>题干：</p>
-                <textarea style="width: 500px;height: 100px;" name="content" title="新题目"></textarea>
-                <p>参考答案：</p>
-                <textarea style="width: 500px;height: 100px;" name="answer" title="标准答案"></textarea>
-                <p>
-                    得分点：
-                    <span>
-                        <a href="javascript:;" onclick="addone()" class="font12">增加一行</a>
-                        &nbsp;&nbsp;
-                        <a href="javascript:;" onclick="removeone()" class="font12">减少一行</a>
-                    </span>
-                </p>
-                <div id="dfd">
-                    <div class="oneline">
-                        关键词：<input type="text" class="txt1" title="" />
-                        分值：<input type="text" class="txt2" title="" />
-                    </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">题目类别：</label>
+                <div class="col-md-7">
+                    <textarea class="form-control" name="Question_class" type="题目类别"></textarea>
                 </div>
-                <textarea id="score_point" style="width: 500px;height: 100px;" name="score_point" title="得分点" class="dn"></textarea>
-                <br />
-                <p>分数：</p>
-                <input type="number" name="score" style="width: 100px;height: 30px;" title="分数" />
-                <p>难度：</p>
-                <select class="sel1" name="Question_degree" style="width: 100px;height: 30px;" title="难度">
-                    <option value="0">简单</option>
-                    <option value="1">普通</option>
-                    <option value="2">较难</option>
-                </select>
             </div>
-            <hr />
-            <div id="box2">
-                <button name="tijiao" type="submit" id="tj" class="tj" style="padding: 5px;">提交</button>
+            <div class="form-group">
+                <label class="col-md-2 control-label">题干：</label>
+                <div class="col-md-7">
+                    <textarea class="form-control" name="content" type="新题目"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">参考答案：</label>
+                <div class="col-md-7">
+                    <textarea class="form-control" name="answer" type="标准答案"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">得分点：</label>
+                <div class="col-md-7">
+                    <button type="button" class="btn btn-primary addbtn outline-btn" onclick="addone()" >增加一行</button>
+                    <button type="button" class="btn btn-primary outline-btn" onclick="removeone()" >减少一行</button>
+                    <div id="dfd">
+                        <div class="oneline">
+                            关键词：<input type="text" class="txt1 form-control input-repeat" title="" />
+                            分值：<input type="text" class="txt2 form-control input-repeat" title="" />
+                        </div>
+                    </div>
+                    <textarea id="score_point" style="width: 500px;height: 100px;" name="score_point" title="得分点" class="dn"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">分数：</label>
+                <div class="col-md-10">
+                    <input class="vertical-spin vertical-spin-customer" type="text" value="" name="score">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">难度：</label>
+                <div class="col-md-10">
+                    <select class="sel1 selectpicker" name="Question_degree" style="width: 100px;height: 30px;" title="难度">
+                        <option value="0">简单</option>
+                        <option value="1">普通</option>
+                        <option value="2">较难</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <button type="submit" name="tijiao" id="tj" class="btn btn-primary">提交</button>
+                </div>
             </div>
         </form>
     </div>
+</div>
 {% endblock %}

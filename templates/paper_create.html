@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "newBase.html" %}
 {% load staticfiles %}
 
 {% block style %}
@@ -18,7 +18,7 @@
 {% block script %}
     <script type="text/javascript">
         $(function () {
-            $('#leftbar > li:eq(2)').addClass('active2');
+            $('.nav > li:eq(2)').addClass('nav-active');
         });
 
         function preCheck() {
@@ -43,23 +43,32 @@
 {% endblock %}
 
 {% block content %}
-    <div class="right">
-        <div class="personal_des ">
-            <div class="head" style="border:1px solid #eaeaea;">
-                <h1>创建考试</h1>
-            </div>
-            <div class="inforcon">
-                <form method="POST" onsubmit="return preCheck();">
-                    {% csrf_token %}
-                    <div id="box1" style="width:90%">
-                        <div style="margin-bottom:30px">
-                            <p>考试名称： <input type="text" id="papername" name="papername" title="" /><input style="margin-left: 20px;padding: 5px;cursor: pointer;" type="submit" value="创建" /></p><br/>
-                            <p>考试班级： <input type="text" id="paperclass"  name="paperclass" title="" />&nbsp;&nbsp;<span>（多个班级请用逗号隔开）</span></p><br/>
-                            请选择题目:
-                        </div>
-                        <table id="qtbl" border="1" style="width:100%">
+    <div class="wrapper">
+        <div class="page-title-box">
+            <h4 class="page-title">创建考试</h4>
+        </div>
+        <div class="page-content">
+            <form class="form-horizontal form-customer form-larger" method="POST" onsubmit="return preCheck();">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="col-md-3 control-label">考试名称：</label>
+                    <div class="col-md-7">
+                        <input class="form-control" type="text" id="papername" name="papername" title="考试名称"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">考试班级：</label>
+                    <div class="col-md-7">
+                        <input class="form-control" type="text" id="paperclass"  name="paperclass" title="考试班级"/>
+                        <span>（多个班级请用逗号隔开）</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">请选择题目：</label>
+                    <div class="col-md-7">
+                        <table id="qtbl" class="table table-striped">
                             <tr>
-                                <th>选择</th>
+                                <th style="width: 45px;">选择</th>
                                 <th>id</th>
                                 <th>题目</th>
                                 <th>答案</th>
@@ -74,8 +83,14 @@
                             {% endfor %}
                         </table>
                     </div>
-                </form>
-            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-7">
+                        <button type="submit" class="btn btn-primary">创建</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}
