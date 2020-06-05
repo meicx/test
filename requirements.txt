@@ -22,7 +22,7 @@ configparser==3.5.0
 cryptography==2.0.3
 cycler==0.10.0
 decorator==4.3.0
-Django==1.9
+Django==1.11.29
 django-braces==1.11.0
 django-crispy-forms==1.6.1
 django-formtools==2.0
